@@ -26,17 +26,41 @@ function run()
     $uri = $requestURI['path'];
 
     //khai báo biến xác định có đường dẫn không, nếu không có đường dẫn thì sẽ là false
-    $found = false;
+    // $found = false;
+    $action = null;
+    //parameter
+    $params = [];
     foreach ($routes as $path => $callback) {
-        if ($path !== $uri) {
-            continue;
+        $params = [];
+        if ($path === $uri) {
+            $action = $callback;
+        } elseif (strpos($path, '{')) {
+            if (strpos($path, '}')) {
+                $pathDefined = explode('/', trim($path, '/'));
+                $pathUri = explode('/', trim($uri, '/'));
+
+                //So sánh độ dai của 2 mảng nếu == nhau thì sẽ làm tiếp
+                if (count($pathDefined) === count($pathUri)) {
+                    //duyệt qua từng phần tử mảng của path được định nghĩa để so sanh với path URI => lây params
+                    foreach ($pathDefined as $k => $p) { //$k:key $p:path
+                        if ($p === $pathUri[$k]) {
+                            $action = $callback;
+                            continue;
+                        }
+                        if (preg_match('/^{\w+}$/', $p)) {
+                            $params[] = $pathUri[$k];
+                        }
+                    }
+                }
+            }
         }
-        $found = true;
-        $callback();
     }
 
-    if ($found == false) {
+    if (!$action) {
         $fileNotFound = $routes['/404'];
         return $fileNotFound();
+    }
+    if (is_callable($action)) {
+        return call_user_func_array($action, $params);
     }
 }

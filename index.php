@@ -21,4 +21,7 @@ route("/404", function () {
 route("/hang_hoa", function () {
     hang_hoa_index();
 });
+route("/hang_hoa/{id}", function ($id) {
+    echo "Sản phẩm có mã $id";
+});
 run();
