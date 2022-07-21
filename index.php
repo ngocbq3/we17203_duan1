@@ -24,6 +24,16 @@ route("/hang_hoa", function () {
 route("/hang_hoa/{id}", function ($id) {
     hang_hoa_show($id);
 });
+
+route("/chitiet", function () {
+    $id = $_GET['id'] ?? null;
+
+    if ($id === null) {
+        header("location:/hanghoa");
+        die;
+    }
+    hang_hoa_show($id);
+});
 // route('/admin/product', function () {
 //     echo "Quản lý products";
 // });

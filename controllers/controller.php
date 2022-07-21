@@ -11,5 +11,9 @@ function hang_hoa_index()
 function hang_hoa_show($id)
 {
     $hang_hoa = hang_hoa_one($id);
+    if (!$hang_hoa) {
+        header('location: /hang_hoa');
+        die;
+    }
     view('products.show', ['hang_hoa' => $hang_hoa]);
 }
