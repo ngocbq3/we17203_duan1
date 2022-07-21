@@ -22,6 +22,12 @@ route("/hang_hoa", function () {
     hang_hoa_index();
 });
 route("/hang_hoa/{id}", function ($id) {
-    echo "Sản phẩm có mã $id";
+    hang_hoa_show($id);
 });
+// route('/admin/product', function () {
+//     echo "Quản lý products";
+// });
+// route('/admin/product/edit/{id}', function ($id) {
+//     echo "Edit products $id";
+// });
 run();

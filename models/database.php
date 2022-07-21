@@ -18,3 +18,11 @@ function get_data_all($sql)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function get_one($sql, $id)
+{
+    $conn = connection();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
